@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { UserContext } from "./userLoginContext";
+import { UserContext } from "./UserLoginContext";
 
 export default function Header({ logout }) {
 	const loggeduser = useContext(UserContext);
