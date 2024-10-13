@@ -20,7 +20,7 @@ app.use(express.json());
 app.use((req, res, next) => {
 	res.setHeader(
 		"Access-Control-Allow-Origin",
-		"https://todoappwithauthentication.vercel.app/"
+		"https://todoappwithauthentication.vercel.app"
 	);
 	res.setHeader(
 		"Access-Control-Allow-Headers",
