@@ -37,10 +37,10 @@ function App() {
 	});
 	if (authType === "login") {
 		heading = buttonText = "Log In";
-		authURL = "http://localhost:3000/auth/login";
+		authURL = "https://todoappwithauthentication.onrender.com/auth/login";
 	} else {
 		heading = buttonText = "Sign Up";
-		authURL = "http://localhost:3000/auth/register";
+		authURL = "https://todoappwithauthentication.onrender.com/auth/register";
 	}
 
 	//

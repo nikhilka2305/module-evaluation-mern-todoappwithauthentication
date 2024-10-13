@@ -5,7 +5,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 export default function ViewToDo() {
 	const navigate = useNavigate();
 	const loggeduser = useContext(UserContext);
-	const getToDoUrl = "http://localhost:3000/todo";
+	const getToDoUrl = "https://todoappwithauthentication.onrender.com/todo";
 	const [error, setError] = useState();
 	const [todolist, setToDoList] = useState([]);
 

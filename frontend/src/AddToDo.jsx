@@ -8,7 +8,7 @@ export default function AddToDo() {
 	});
 	const loggeduser = useContext(UserContext);
 	const userToken = loggeduser ? loggeduser.token : undefined;
-	const getToDoUrl = "http://localhost:3000/todo";
+	const getToDoUrl = "https://todoappwithauthentication.onrender.com/todo";
 	const [error, setError] = useState();
 	useEffect(() => {
 		if (!loggeduser) {
