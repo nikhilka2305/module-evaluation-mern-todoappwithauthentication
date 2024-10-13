@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "./userLoginContext";
+import { UserContext } from "./UserLoginContext";
 
 export default function Home({
 	handleAuthentication,
