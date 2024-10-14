@@ -1,14 +1,18 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { UserContext } from "./UserLoginContext";
 import { NavLink, useNavigate } from "react-router-dom";
+import { tailspin } from "ldrs";
+
+// Default values shown
 
 export default function ViewToDo() {
 	const navigate = useNavigate();
 	const loggeduser = useContext(UserContext);
-	const getToDoUrl = "https://todoappwithauthentication.onrender.com/todo";
+	const getToDoUrl = "http://localhost:3000/todo";
 	const [error, setError] = useState();
 	const [todolist, setToDoList] = useState([]);
-
+	const [isLoading, setIsloading] = useState(false);
+	tailspin.register();
 	useEffect(() => {
 		if (loggeduser && loggeduser.token) {
 			const userToken = loggeduser.token;
@@ -19,6 +23,7 @@ export default function ViewToDo() {
 
 			async function fetchTodo() {
 				try {
+					setIsloading(true);
 					const response = await fetch(getToDoUrl, options);
 					const responseData = await response.json();
 					if (!response.ok) {
@@ -30,6 +35,7 @@ export default function ViewToDo() {
 				} catch (err) {
 					setError("Error fetching Todos");
 				}
+				setIsloading(false);
 			}
 
 			fetchTodo();
@@ -52,10 +58,19 @@ export default function ViewToDo() {
 					{loggeduser.user}
 				</h2>
 			)}
-			{!todolist.length && (
+			{isLoading && (
+				<l-tailspin
+					size="120"
+					stroke="5"
+					speed="0.9"
+					color="black"
+				></l-tailspin>
+			)}
+
+			{!todolist.length && !isLoading && (
 				<h3 className="text-xl p-4 font-semibold">You don't have any ToDos</h3>
 			)}
-			{!error && loggeduser && todolist.length > 0 && (
+			{!error && !isLoading && loggeduser && todolist.length > 0 && (
 				<ul className="mx-auto border p-4 rounded-lg border-orange-700 bg-orange-200 w-4/6 mt-8 drop-shadow-md">
 					{todolist.map((todo) => {
 						return (

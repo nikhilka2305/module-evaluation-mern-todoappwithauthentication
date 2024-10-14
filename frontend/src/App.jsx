@@ -23,6 +23,7 @@ function App() {
 	const [errorMessage, setErrorMessage] = useState();
 	const [loggeduser, setLoggedUser] = useState();
 	const [cookies, setCookies, removeCookies] = useCookies(["user"]);
+	const [isLoading, setIsloading] = useState(false);
 
 	useEffect(() => {
 		setLoggedUser(cookies.user);
@@ -37,10 +38,10 @@ function App() {
 	});
 	if (authType === "login") {
 		heading = buttonText = "Log In";
-		authURL = "https://todoappwithauthentication.onrender.com/auth/login";
+		authURL = "http://localhost:3000/auth/login";
 	} else {
 		heading = buttonText = "Sign Up";
-		authURL = "https://todoappwithauthentication.onrender.com/auth/register";
+		authURL = "http://localhost:3000/auth/register";
 	}
 
 	//
@@ -64,6 +65,7 @@ function App() {
 		};
 
 		try {
+			setIsloading(true);
 			const response = await fetch(authURL, options);
 			const responseData = await response.json();
 			if (!response.ok) {
@@ -79,6 +81,7 @@ function App() {
 		} catch (err) {
 			setErrorMessage("Error sending Request to API");
 		}
+		setIsloading(false);
 	}
 
 	return (
@@ -103,6 +106,7 @@ function App() {
 										setUser={setUser}
 										authType={authType}
 										setAuthType={setAuthType}
+										isLoading={isLoading}
 									></Home>
 								}
 							/>

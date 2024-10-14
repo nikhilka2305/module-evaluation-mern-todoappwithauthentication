@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserLoginContext";
+import { ring } from "ldrs";
 
 export default function Home({
 	handleAuthentication,
@@ -8,6 +9,7 @@ export default function Home({
 	setUser,
 	authType,
 	setAuthType,
+	isLoading,
 }) {
 	const navigate = useNavigate();
 	const loggeduser = useContext(UserContext);
@@ -16,6 +18,7 @@ export default function Home({
 			navigate("/todolist");
 		}
 	}, [loggeduser]);
+	ring.register();
 	return (
 		<>
 			<h3 className="text-2xl font-bold mt-8">{authType.toUpperCase()}</h3>
@@ -38,47 +41,58 @@ export default function Home({
 				)}
 			</div>
 
-			<article className="flex flex-col justify-center items-start bg-orange-200 border-none rounded-lg py-8 px-4 w-3/5 drop-shadow-lg">
-				<form action="" className="flex flex-col gap-4 w-full">
-					<label htmlFor="username" className="font-semibold">
-						Enter Username
-					</label>
-					<input
-						className="border border-gray-400 rounded-md text-lg px-2 py-1 outline-orange-500"
-						type="text"
-						id="username"
-						name="username"
-						value={user.username}
-						onChange={(evt) => {
-							setUser((curUser) => {
-								return { ...curUser, username: evt.target.value };
-							});
-						}}
-						required
-					/>
-					<label htmlFor="password" className="font-semibold">
-						Enter Password
-					</label>
-					<input
-						className="border border-gray-400 rounded-md text-lg px-2 py-1 outline-orange-500"
-						type="password"
-						id="password"
-						name="password"
-						value={user.password}
-						onChange={(evt) => {
-							setUser((curUser) => {
-								return { ...curUser, password: evt.target.value };
-							});
-						}}
-						required
-					/>
-					<button
-						className="border rounded-md border-orange-500 text-orange-500 hover:border-none hover:bg-orange-500 hover:text-orange-100 p-2"
-						onClick={handleAuthentication}
-					>
-						{authType.toUpperCase()}
-					</button>
-				</form>
+			<article className="flex flex-col justify-center items-center bg-orange-200 border-none rounded-lg py-8 px-4 w-3/5 drop-shadow-lg">
+				{isLoading && (
+					<l-ring
+						size="120"
+						stroke="5"
+						bg-opacity="0"
+						speed="2"
+						color="orange"
+					></l-ring>
+				)}
+				{!isLoading && (
+					<form action="" className="flex flex-col gap-4 w-full">
+						<label htmlFor="username" className="font-semibold">
+							Enter Username
+						</label>
+						<input
+							className="border border-gray-400 rounded-md text-lg px-2 py-1 outline-orange-500"
+							type="text"
+							id="username"
+							name="username"
+							value={user.username}
+							onChange={(evt) => {
+								setUser((curUser) => {
+									return { ...curUser, username: evt.target.value };
+								});
+							}}
+							required
+						/>
+						<label htmlFor="password" className="font-semibold">
+							Enter Password
+						</label>
+						<input
+							className="border border-gray-400 rounded-md text-lg px-2 py-1 outline-orange-500"
+							type="password"
+							id="password"
+							name="password"
+							value={user.password}
+							onChange={(evt) => {
+								setUser((curUser) => {
+									return { ...curUser, password: evt.target.value };
+								});
+							}}
+							required
+						/>
+						<button
+							className="border rounded-md border-orange-500 text-orange-500 hover:border-none hover:bg-orange-500 hover:text-orange-100 p-2"
+							onClick={handleAuthentication}
+						>
+							{authType.toUpperCase()}
+						</button>
+					</form>
+				)}
 			</article>
 		</>
 	);

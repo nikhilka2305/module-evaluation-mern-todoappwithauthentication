@@ -3,15 +3,18 @@ import { UserContext } from "./UserLoginContext";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import Modal from "./Modal";
 import Form from "./Form";
+import { tailspin } from "ldrs";
 
 export default function ToDo() {
 	const modal = useRef();
 	const navigate = useNavigate();
 	const todoId = useParams().todoid;
 	const loggeduser = useContext(UserContext);
-	const getToDoUrl = `https://todoappwithauthentication.onrender.com/todo/${todoId}`;
+	const getToDoUrl = `http://localhost:3000/todo/${todoId}`;
 	const [error, setError] = useState();
 	const [todo, setToDo] = useState();
+	const [isLoading, setIsloading] = useState(false);
+	tailspin.register();
 	const userToken = loggeduser ? loggeduser.token : undefined;
 
 	useEffect(() => {
@@ -22,6 +25,7 @@ export default function ToDo() {
 					headers: { authorization: `Bearer ${userToken}` },
 				};
 				try {
+					setIsloading(true);
 					const response = await fetch(getToDoUrl, options);
 					const responseData = await response.json();
 
@@ -34,6 +38,7 @@ export default function ToDo() {
 				} catch (err) {
 					setError("Error fetching Todo");
 				}
+				setIsloading(false);
 			}
 
 			fetchTodo();
@@ -51,6 +56,7 @@ export default function ToDo() {
 		};
 
 		try {
+			setIsloading(true);
 			const response = await fetch(getToDoUrl, options);
 
 			if (!response.ok) {
@@ -62,6 +68,7 @@ export default function ToDo() {
 		} catch (err) {
 			setError("Error deleting Todo");
 		}
+		setIsloading(false);
 	}
 
 	const handleModalDelete = () => {
@@ -90,7 +97,15 @@ export default function ToDo() {
 					{loggeduser.user}
 				</h2>
 			)}
-			{loggeduser && todo && (
+			{isLoading && (
+				<l-tailspin
+					size="120"
+					stroke="5"
+					speed="0.9"
+					color="black"
+				></l-tailspin>
+			)}
+			{loggeduser && !isLoading && todo && (
 				<div className="drop-shadow-xl w-3/4 border border-orange-600 rounded-md p-4 my-2 hover:text-orange-600 hover:bg-orange-200 text-center flex justify-between align-items-center">
 					<div className="content flex flex-col gap-4">
 						<h3 className="text-3xl font-semibold">Title: {todo.title}</h3>

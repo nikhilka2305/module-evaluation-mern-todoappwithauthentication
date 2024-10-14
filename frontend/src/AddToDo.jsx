@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserLoginContext";
 import { NavLink, useNavigate } from "react-router-dom";
+import { tailspin } from "ldrs";
 export default function AddToDo() {
 	const navigate = useNavigate();
 	const [todo, setToDo] = useState({
@@ -8,8 +9,10 @@ export default function AddToDo() {
 	});
 	const loggeduser = useContext(UserContext);
 	const userToken = loggeduser ? loggeduser.token : undefined;
-	const getToDoUrl = "https://todoappwithauthentication.onrender.com/todo";
+	const getToDoUrl = "http://localhost:3000/todo";
 	const [error, setError] = useState();
+	const [isLoading, setIsloading] = useState(false);
+	tailspin.register();
 	useEffect(() => {
 		if (!loggeduser) {
 			setError("Invalid Token");
@@ -28,6 +31,7 @@ export default function AddToDo() {
 			body: JSON.stringify(todo),
 		};
 		try {
+			setIsloading(true);
 			const response = await fetch(getToDoUrl, options);
 			const responseData = await response.json();
 			if (!response.ok) {
@@ -38,6 +42,7 @@ export default function AddToDo() {
 		} catch (err) {
 			setError("Error fetching Todos");
 		}
+		setIsloading(false);
 	}
 	return (
 		<section className="w-full pt-4 mx-auto flex flex-col items-center">
@@ -58,7 +63,15 @@ export default function AddToDo() {
 			>
 				View All To Dos
 			</NavLink>
-			{loggeduser && (
+			{isLoading && (
+				<l-tailspin
+					size="120"
+					stroke="5"
+					speed="0.9"
+					color="black"
+				></l-tailspin>
+			)}
+			{loggeduser && !isLoading && (
 				<>
 					<form action="" className="flex flex-col gap-2 mt-8 w-5/12">
 						<label htmlFor="title">Enter Title</label>

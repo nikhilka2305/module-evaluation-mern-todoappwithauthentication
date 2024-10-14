@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "./UserLoginContext";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { tailspin } from "ldrs";
 export default function EditToDo() {
 	const navigate = useNavigate();
 	const [todo, setToDo] = useState({
@@ -11,9 +12,11 @@ export default function EditToDo() {
 	const todoId = useParams().todoid;
 	const loggeduser = useContext(UserContext);
 	const userToken = loggeduser ? loggeduser.token : undefined;
-	const getToDoUrl = `https://todoappwithauthentication.onrender.com/todo/${todoId}`;
+	const getToDoUrl = `http://localhost:3000/todo/${todoId}`;
 
 	const [error, setError] = useState();
+	const [isLoading, setIsloading] = useState(false);
+	tailspin.register();
 
 	useEffect(() => {
 		if (loggeduser && loggeduser.token) {
@@ -23,6 +26,7 @@ export default function EditToDo() {
 					headers: { authorization: `Bearer ${userToken}` },
 				};
 				try {
+					setIsloading(true);
 					const response = await fetch(getToDoUrl, options);
 					const responseData = await response.json();
 					if (!response.ok) {
@@ -34,6 +38,7 @@ export default function EditToDo() {
 				} catch (err) {
 					setError("Error fetching Todos");
 				}
+				setIsloading(false);
 			}
 
 			getToDo();
@@ -55,6 +60,7 @@ export default function EditToDo() {
 			body: JSON.stringify(todo),
 		};
 		try {
+			setIsloading(true);
 			const response = await fetch(getToDoUrl, options);
 			const responseData = await response.json();
 			if (!response.ok) {
@@ -65,6 +71,7 @@ export default function EditToDo() {
 		} catch (err) {
 			setError("Error fetching Todos");
 		}
+		setIsloading(false);
 	}
 	return (
 		<section className="w-full pt-4 mx-auto flex flex-col items-center">
@@ -85,7 +92,15 @@ export default function EditToDo() {
 			>
 				View All To Dos
 			</NavLink>
-			{loggeduser && (
+			{isLoading && (
+				<l-tailspin
+					size="120"
+					stroke="5"
+					speed="0.9"
+					color="black"
+				></l-tailspin>
+			)}
+			{loggeduser && !isLoading && (
 				<>
 					<form
 						action=""
