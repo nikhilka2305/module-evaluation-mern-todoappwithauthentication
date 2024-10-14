@@ -8,7 +8,7 @@ import { tailspin } from "ldrs";
 export default function ViewToDo() {
 	const navigate = useNavigate();
 	const loggeduser = useContext(UserContext);
-	const getToDoUrl = "http://localhost:3000/todo";
+	const getToDoUrl = "https://todoappwithauthentication.onrender.com/todo";
 	const [error, setError] = useState();
 	const [todolist, setToDoList] = useState([]);
 	const [isLoading, setIsloading] = useState(false);

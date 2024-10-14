@@ -10,7 +10,7 @@ export default function ToDo() {
 	const navigate = useNavigate();
 	const todoId = useParams().todoid;
 	const loggeduser = useContext(UserContext);
-	const getToDoUrl = `http://localhost:3000/todo/${todoId}`;
+	const getToDoUrl = `https://todoappwithauthentication.onrender.com/todo/${todoId}`;
 	const [error, setError] = useState();
 	const [todo, setToDo] = useState();
 	const [isLoading, setIsloading] = useState(false);
