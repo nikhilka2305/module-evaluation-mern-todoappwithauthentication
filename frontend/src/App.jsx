@@ -88,7 +88,7 @@ function App() {
 		<CookiesProvider defaultSetOptions={{ path: "/" }}>
 			<UserContext.Provider value={loggeduser}>
 				<Header logout={handleLogOut} />
-				<main className="main bg-gradient-to-r from-orange-300 to-orange-500 flex flex-col gap-8 min-h-screen h-full items-center">
+				<main className="main bg-gradient-to-r from-orange-300 to-orange-500 flex flex-col gap-8 min-h-screen h-full w-screen items-center">
 					{errorMessage && (
 						<h6 className="text-center text-red-600 mt-4 p-2 border-2 border-red-500 rounded-md w-1/3">
 							{errorMessage}

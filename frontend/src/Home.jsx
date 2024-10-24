@@ -52,7 +52,11 @@ export default function Home({
 					></l-ring>
 				)}
 				{!isLoading && (
-					<form action="" className="flex flex-col gap-4 w-full">
+					<form
+						action=""
+						className="flex flex-col gap-4 w-full"
+						onSubmit={handleAuthentication}
+					>
 						<label htmlFor="username" className="font-semibold">
 							Enter Username
 						</label>
@@ -85,10 +89,7 @@ export default function Home({
 							}}
 							required
 						/>
-						<button
-							className="border rounded-md border-orange-500 text-orange-500 hover:border-none hover:bg-orange-500 hover:text-orange-100 p-2"
-							onClick={handleAuthentication}
-						>
+						<button className="border rounded-md border-orange-500 text-orange-500 hover:border-none hover:bg-orange-500 hover:text-orange-100 p-2">
 							{authType.toUpperCase()}
 						</button>
 					</form>
